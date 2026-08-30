@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>마켓레이더 | 소상공인을 위한 주간 시장 데이터 리포트</title>
+<meta name="description" content="정부 공식 통계만으로 만드는 소상공인을 위한 주간 시장 데이터 리포트. 마켓레이더.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#14171A;
+    --paper:#F7F5F1;
+    --signal:#3D5A45;
+    --signal-bright:#5C8A6B;
+    --alert:#B5482A;
+    --rule:#D8D4CB;
+    --zebra:#EFEBE3;
+    --ink-soft:#4A4E52;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans KR', sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .display{font-family:'Fraunces', serif;}
+  .mono{font-family:'IBM Plex Mono', monospace;}
+
+  a{color:inherit;}
+  img{max-width:100%; display:block;}
+
+  .wrap{max-width:1180px; margin:0 auto; padding:0 32px;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    display:grid;
+    grid-template-columns: 280px 1fr;
+    min-height:100vh;
+  }
+  .hero-side{
+    background:var(--ink);
+    color:var(--paper);
+    padding:40px 32px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    position:relative;
+  }
+  .brand-mark{
+    display:flex; align-items:center; gap:10px;
+  }
+  .brand-mark .dot{
+    width:9px; height:9px; border-radius:50%;
+    background:var(--signal-bright);
+    box-shadow:0 0 0 4px rgba(92,138,107,0.25);
+  }
+  .brand-mark span{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+  }
+  .side-meta{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.08em;
+    color:#9CA3A8;
+    line-height:2;
+  }
+  .side-meta b{color:var(--paper); font-weight:500;}
+  .radar-scope{
+    width:150px; height:150px;
+    border-radius:50%;
+    border:1px solid rgba(247,245,241,0.18);
+    position:relative;
+    align-self:center;
+    margin:32px 0;
+  }
+  .radar-scope::before, .radar-scope::after{
+    content:"";
+    position:absolute;
+    border-radius:50%;
+    border:1px solid rgba(247,245,241,0.12);
+  }
+  .radar-scope::before{ inset:24px; }
+  .radar-scope::after{ inset:48px; }
+  .radar-sweep{
+    position:absolute; inset:0;
+    border-radius:50%;
+    overflow:hidden;
+  }
+  .radar-sweep span{
+    position:absolute;
+    top:50%; left:50%;
+    width:50%; height:1px;
+    background:linear-gradient(90deg, var(--signal-bright), transparent);
+    transform-origin:0 0;
+    animation:sweep 4s linear infinite;
+    box-shadow:0 0 8px 1px rgba(92,138,107,0.5);
+  }
+  @keyframes sweep{ to{ transform:rotate(360deg); } }
+  .radar-blip{
+    position:absolute;
+    width:5px; height:5px;
+    background:var(--signal-bright);
+    border-radius:50%;
+    box-shadow:0 0 6px 1px rgba(92,138,107,0.7);
+  }
+
+  .hero-main{
+    padding:56px 56px 40px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.14em;
+    color:var(--signal);
+    text-transform:uppercase;
+    margin-bottom:18px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{
+    content:""; width:22px; height:1px; background:var(--signal);
+  }
+  h1{
+    font-size:clamp(34px, 4.4vw, 56px);
+    font-weight:600;
+    letter-spacing:-0.01em;
+    line-height:1.18;
+    max-width:14ch;
+    margin-bottom:22px;
+  }
+  h1 em{
+    font-style:normal;
+    color:var(--signal);
+  }
+  .lede{
+    font-size:17px;
+    color:var(--ink-soft);
+    max-width:46ch;
+    margin-bottom:34px;
+  }
+  .cta-row{
+    display:flex; gap:14px; flex-wrap:wrap; align-items:center;
+  }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:15px 26px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    letter-spacing:0.03em;
+    text-decoration:none;
+    border:1px solid var(--ink);
+    cursor:pointer;
+    transition:background .15s ease, color .15s ease;
+  }
+  .btn-primary{
+    background:var(--ink); color:var(--paper);
+  }
+  .btn-primary:hover{ background:var(--signal); border-color:var(--signal); }
+  .btn-ghost{
+    background:transparent; color:var(--ink);
+  }
+  .btn-ghost:hover{ background:var(--ink); color:var(--paper); }
+
+  /* ---------- PRINCIPLES ---------- */
+  .section{ padding:96px 0; }
+  .section-head{
+    display:grid;
+    grid-template-columns:120px 1fr;
+    gap:24px;
+    margin-bottom:52px;
+    border-top:1px solid var(--rule);
+    padding-top:24px;
+  }
+  .roman{
+    font-family:'Fraunces', serif;
+    font-size:15px;
+    color:var(--signal);
+  }
+  .section-head h2{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size:clamp(24px,3vw,34px);
+    max-width:20ch;
+  }
+
+  .principles{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:1px;
+    background:var(--rule);
+    border:1px solid var(--rule);
+  }
+  .principle{
+    background:var(--paper);
+    padding:32px 28px;
+  }
+  .principle .num{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--signal);
+    display:block;
+    margin-bottom:14px;
+  }
+  .principle h3{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size:19px;
+    margin-bottom:10px;
+  }
+  .principle p{ font-size:14.5px; color:var(--ink-soft); }
+
+  /* ---------- LATEST REPORT ---------- */
+  .report-card{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    border:1px solid var(--rule);
+    background:#fff;
+  }
+  .report-visual{
+    background:var(--ink);
+    color:var(--paper);
+    padding:44px;
+    display:flex; flex-direction:column; justify-content:space-between;
+    min-height:340px;
+  }
+  .report-visual .tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px; letter-spacing:0.1em;
+    color:var(--signal-bright);
+  }
+  .report-visual h3{
+    font-family:'Fraunces', serif;
+    font-size:26px;
+    font-weight:500;
+    line-height:1.35;
+    margin-top:18px;
+  }
+  .report-visual .issue{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:#9CA3A8;
+  }
+  .report-body{
+    padding:44px;
+    display:flex; flex-direction:column; justify-content:center;
+  }
+  .report-body p{ color:var(--ink-soft); margin-bottom:22px; font-size:15px;}
+  .stat-row{
+    display:flex; gap:28px; margin-bottom:28px;
+    border-top:1px solid var(--rule);
+    border-bottom:1px solid var(--rule);
+    padding:18px 0;
+  }
+  .stat b{
+    display:block;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:22px;
+    color:var(--ink);
+  }
+  .stat span{ font-size:12px; color:var(--ink-soft); }
+  .disclosure{
+    font-size:12px;
+    color:#8A8D90;
+    margin-top:16px;
+    line-height:1.7;
+  }
+
+  /* ---------- EMAIL / DOWNLOAD ---------- */
+  .capture{
+    background:var(--ink);
+    color:var(--paper);
+    padding:88px 0;
+  }
+  .capture-inner{
+    display:grid;
+    grid-template-columns:1.1fr 1fr;
+    gap:60px;
+    align-items:center;
+  }
+  .capture h2{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size:clamp(26px,3.2vw,38px);
+    line-height:1.3;
+    margin-bottom:18px;
+  }
+  .capture p{ color:#B7BBBE; font-size:15px; max-width:42ch; }
+  form{
+    display:flex; flex-direction:column; gap:12px;
+  }
+  .field-row{
+    display:flex; gap:10px;
+  }
+  input[type=email], input[type=text]{
+    flex:1;
+    background:transparent;
+    border:1px solid rgba(247,245,241,0.3);
+    color:var(--paper);
+    padding:15px 16px;
+    font-family:'IBM Plex Sans KR', sans-serif;
+    font-size:14px;
+  }
+  input::placeholder{ color:#8A8E91; }
+  input:focus{ outline:2px solid var(--signal-bright); outline-offset:2px; }
+  .field-row .btn-primary{
+    background:var(--signal); border-color:var(--signal); white-space:nowrap;
+  }
+  .field-row .btn-primary:hover{ background:var(--signal-bright); }
+  .form-note{ font-size:12px; color:#8A8E91; }
+  .form-status{ font-size:13px; min-height:18px; }
+  .form-status.ok{ color:var(--signal-bright); }
+  .form-status.err{ color:#E28A6F; }
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    padding:40px 0 56px;
+    border-top:1px solid var(--rule);
+  }
+  .footer-grid{
+    display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:20px;
+  }
+  .footer-grid .mono{ font-size:11.5px; color:#8A8D90; letter-spacing:0.03em; }
+  .compliance{
+    margin-top:26px;
+    font-size:11.5px;
+    color:#9A9D9F;
+    max-width:70ch;
+    line-height:1.8;
+    border-top:1px solid var(--rule);
+    padding-top:20px;
+  }
+
+  @media (max-width: 860px){
+    .hero{ grid-template-columns:1fr; }
+    .hero-side{ flex-direction:row; justify-content:space-between; align-items:center; padding:24px; }
+    .radar-scope{ display:none; }
+    .side-meta{ display:none; }
+    .hero-main{ padding:48px 24px; }
+    .section{ padding:64px 0; }
+    .wrap{ padding:0 20px; }
+    .section-head{ grid-template-columns:1fr; gap:8px; }
+    .principles{ grid-template-columns:1fr; }
+    .report-card{ grid-template-columns:1fr; }
+    .capture-inner{ grid-template-columns:1fr; }
+    .field-row{ flex-direction:column; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .radar-sweep span{ animation:none; }
+  }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-side">
+    <div>
+      <div class="brand-mark">
+        <span class="dot"></span>
+        <span>MARKET RADAR</span>
+      </div>
+      <div class="side-meta" style="margin-top:20px;">
+        발행 · 마켓레이더<br>
+        형식 · 주간 데이터 리포트<br>
+        기반 · <b>정부 공식 통계</b>
+      </div>
+    </div>
+
+    <div class="radar-scope">
+      <div class="radar-sweep"><span></span></div>
+      <div class="radar-blip" style="top:38%; left:62%;"></div>
+      <div class="radar-blip" style="top:65%; left:35%;"></div>
+      <div class="radar-blip" style="top:28%; left:30%;"></div>
+    </div>
+
+    <div class="side-meta">
+      ISSUE · PILOT<br>
+      STATUS · <b>FREE ACCESS</b>
+    </div>
+  </div>
+
+  <div class="hero-main">
+    <div class="eyebrow">소상공인을 위한 시장 신호 탐지</div>
+    <h1>추정 없이, <em>공식 통계</em>로만<br>읽는 이번 주 시장</h1>
+    <p class="lede">
+      카드결제, 배달, 임대, 소비 — 정부가 매주 발표하는 원자료만 골라
+      해석과 데이터를 분리해서 전달합니다. 만들어낸 숫자는 없습니다.
+    </p>
+    <div class="cta-row">
+      <a href="#report" class="btn btn-primary">무료 리포트 받기 →</a>
+      <a href="#principles" class="btn btn-ghost">제작 원칙 보기</a>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="principles">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="roman">Ⅰ</span>
+      <h2>세 가지 원칙으로만 만듭니다</h2>
+    </div>
+    <div class="principles">
+      <div class="principle">
+        <span class="num">01 / 검증</span>
+        <h3>원문에 없는 숫자는 쓰지 않음</h3>
+        <p>공식 발표 자료에 직접 명시된 수치만 사용합니다. 역산하거나 추정한 값은 리포트에 실리지 않습니다.</p>
+      </div>
+      <div class="principle">
+        <span class="num">02 / 구분</span>
+        <h3>데이터와 해석을 분리</h3>
+        <p>"무엇이 관측됐는가"와 "무엇을 의미할 수 있는가"를 같은 문단에 섞지 않습니다.</p>
+      </div>
+      <div class="principle">
+        <span class="num">03 / 출처</span>
+        <h3>1차 출처를 항상 표기</h3>
+        <p>국가데이터처, 한국은행 등 발표 기관과 발표일을 이미지 안에 직접 명시합니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="report">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="roman">Ⅱ</span>
+      <h2>이번 주 무료 리포트</h2>
+    </div>
+
+    <div class="report-card">
+      <div class="report-visual">
+        <div>
+          <span class="tag">PILOT REPORT · FREE</span>
+          <h3>카드값은 늘고,<br>배달앱은 주춤한 이유</h3>
+        </div>
+        <span class="issue">EP.02 · 2026.08.28</span>
+      </div>
+      <div class="report-body">
+        <p>
+          온라인쇼핑(+10.7%), 배달·외식(+4.7%), 카드 승인(+7.6%) — 세 지표를 교차 검토해
+          "소비가 줄고 있는가"가 아니라 "어느 채널·업종이 강한가"를 짚어보는 리포트입니다.
+        </p>
+        <div class="stat-row">
+          <div class="stat"><b>8p</b><span>분량</span></div>
+          <div class="stat"><b>A~B</b><span>데이터 신뢰도</span></div>
+          <div class="stat"><b>PDF</b><span>파일 형식</span></div>
+        </div>
+        <a href="report.pdf" class="btn btn-primary" download>PDF 다운로드 →</a>
+        <p class="disclosure">
+          ※ 본 리포트는 파일럿 버전입니다. 정식판은 매주 발행됩니다.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="capture" id="subscribe">
+  <div class="wrap capture-inner">
+    <div>
+      <h2>매주, 스캔한 신호를<br>바로 받아보세요</h2>
+      <p>이메일 하나면 매주 발행되는 무료 리포트를 가장 먼저 받아볼 수 있습니다. 스팸 없이, 데이터 있는 주에만 보냅니다.</p>
+    </div>
+    <form id="subscribe-form">
+      <div class="field-row">
+        <input type="email" id="email" name="email" placeholder="이메일 주소" required>
+        <button type="submit" class="btn btn-primary">구독하기</button>
+      </div>
+      <p class="form-status" id="form-status"></p>
+      <p class="form-note">언제든 구독 취소할 수 있습니다. 이메일은 리포트 발송 외 다른 목적으로 사용되지 않습니다.</p>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <span class="mono">© 2026 MARKET RADAR</span>
+      <span class="mono">SOURCES · 국가데이터처 · 한국은행 · 중소벤처기업부 · 여신금융협회</span>
+    </div>
+    <p class="compliance">
+      COMPLIANCE NOTICE — 본 리포트에 수록된 모든 수치는 각 발표 기관의 공개 통계를 원문 그대로 인용한 것이며,
+      투자 또는 경영 판단에 대한 권유나 자문이 아닙니다. 해석 및 시뮬레이션은 예시적 목적으로만 제공됩니다.
+    </p>
+  </div>
+</footer>
+
+<script>
+  // ⚠️ 폼 제출 연동 안내
+  // 지금은 이메일 주소를 콘솔에만 기록합니다. 실제 수집을 원하시면 아래 중 하나로 교체하세요:
+  //   1) formsubmit.co  — action="https://formsubmit.co/본인이메일주소" 로 바꾸면 별도 가입 없이 이메일로 알림 수신
+  //   2) 스티비(Stibee) — 스티비에서 발급하는 구독 폼 endpoint로 fetch 요청 교체
+  //   3) 자체 서버리스 함수 — Vercel Serverless Function 만들어서 DB(예: Supabase, Airtable)에 저장
+  const form = document.getElementById('subscribe-form');
+  const status = document.getElementById('form-status');
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    const email = document.getElementById('email').value.trim();
+    if(!email){ return; }
+
+    // TODO: 아래 fetch 부분을 실제 연동 endpoint로 교체하세요.
+    console.log('구독 신청:', email);
+
+    status.textContent = '구독 폼이 아직 연동 전입니다 — 안내대로 endpoint를 연결해주세요.';
+    status.className = 'form-status err';
+
+    // 연동 완료 후에는 아래처럼 성공 메시지로 바꾸면 됩니다:
+    // status.textContent = '구독 완료! 다음 리포트부터 받아보실 수 있어요.';
+    // status.className = 'form-status ok';
+  });
+</script>
+
+</body>
+</html>
