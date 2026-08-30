@@ -1,3 +1,6 @@
+
+
+Index · HTML
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -30,12 +33,12 @@
   }
   .display{font-family:'Fraunces', serif;}
   .mono{font-family:'IBM Plex Mono', monospace;}
-
+ 
   a{color:inherit;}
   img{max-width:100%; display:block;}
-
+ 
   .wrap{max-width:1180px; margin:0 auto; padding:0 32px;}
-
+ 
   /* ---------- HERO ---------- */
   .hero{
     display:grid;
@@ -111,7 +114,7 @@
     border-radius:50%;
     box-shadow:0 0 6px 1px rgba(92,138,107,0.7);
   }
-
+ 
   .hero-main{
     padding:56px 56px 40px;
     display:flex;
@@ -170,7 +173,7 @@
     background:transparent; color:var(--ink);
   }
   .btn-ghost:hover{ background:var(--ink); color:var(--paper); }
-
+ 
   /* ---------- PRINCIPLES ---------- */
   .section{ padding:96px 0; }
   .section-head{
@@ -192,7 +195,7 @@
     font-size:clamp(24px,3vw,34px);
     max-width:20ch;
   }
-
+ 
   .principles{
     display:grid;
     grid-template-columns:repeat(3, 1fr);
@@ -218,7 +221,7 @@
     margin-bottom:10px;
   }
   .principle p{ font-size:14.5px; color:var(--ink-soft); }
-
+ 
   /* ---------- LATEST REPORT ---------- */
   .report-card{
     display:grid;
@@ -274,7 +277,7 @@
     margin-top:16px;
     line-height:1.7;
   }
-
+ 
   /* ---------- EMAIL / DOWNLOAD ---------- */
   .capture{
     background:var(--ink);
@@ -320,7 +323,7 @@
   .form-status{ font-size:13px; min-height:18px; }
   .form-status.ok{ color:var(--signal-bright); }
   .form-status.err{ color:#E28A6F; }
-
+ 
   /* ---------- FOOTER ---------- */
   footer{
     padding:40px 0 56px;
@@ -339,7 +342,7 @@
     border-top:1px solid var(--rule);
     padding-top:20px;
   }
-
+ 
   @media (max-width: 860px){
     .hero{ grid-template-columns:1fr; }
     .hero-side{ flex-direction:row; justify-content:space-between; align-items:center; padding:24px; }
@@ -354,14 +357,14 @@
     .capture-inner{ grid-template-columns:1fr; }
     .field-row{ flex-direction:column; }
   }
-
+ 
   @media (prefers-reduced-motion: reduce){
     .radar-sweep span{ animation:none; }
   }
 </style>
 </head>
 <body>
-
+ 
 <section class="hero">
   <div class="hero-side">
     <div>
@@ -375,20 +378,20 @@
         기반 · <b>정부 공식 통계</b>
       </div>
     </div>
-
+ 
     <div class="radar-scope">
       <div class="radar-sweep"><span></span></div>
       <div class="radar-blip" style="top:38%; left:62%;"></div>
       <div class="radar-blip" style="top:65%; left:35%;"></div>
       <div class="radar-blip" style="top:28%; left:30%;"></div>
     </div>
-
+ 
     <div class="side-meta">
       ISSUE · PILOT<br>
       STATUS · <b>FREE ACCESS</b>
     </div>
   </div>
-
+ 
   <div class="hero-main">
     <div class="eyebrow">소상공인을 위한 시장 신호 탐지</div>
     <h1>추정 없이, <em>공식 통계</em>로만<br>읽는 이번 주 시장</h1>
@@ -402,7 +405,7 @@
     </div>
   </div>
 </section>
-
+ 
 <section class="section" id="principles">
   <div class="wrap">
     <div class="section-head">
@@ -428,14 +431,14 @@
     </div>
   </div>
 </section>
-
+ 
 <section class="section" id="report">
   <div class="wrap">
     <div class="section-head">
       <span class="roman">Ⅱ</span>
       <h2>이번 주 무료 리포트</h2>
     </div>
-
+ 
     <div class="report-card">
       <div class="report-visual">
         <div>
@@ -462,24 +465,7 @@
     </div>
   </div>
 </section>
-
-<section class="capture" id="subscribe">
-  <div class="wrap capture-inner">
-    <div>
-      <h2>매주, 스캔한 신호를<br>바로 받아보세요</h2>
-      <p>이메일 하나면 매주 발행되는 무료 리포트를 가장 먼저 받아볼 수 있습니다. 스팸 없이, 데이터 있는 주에만 보냅니다.</p>
-    </div>
-    <form id="subscribe-form">
-      <div class="field-row">
-        <input type="email" id="email" name="email" placeholder="이메일 주소" required>
-        <button type="submit" class="btn btn-primary">구독하기</button>
-      </div>
-      <p class="form-status" id="form-status"></p>
-      <p class="form-note">언제든 구독 취소할 수 있습니다. 이메일은 리포트 발송 외 다른 목적으로 사용되지 않습니다.</p>
-    </form>
-  </div>
-</section>
-
+ 
 <footer>
   <div class="wrap">
     <div class="footer-grid">
@@ -492,32 +478,8 @@
     </p>
   </div>
 </footer>
-
-<script>
-  // ⚠️ 폼 제출 연동 안내
-  // 지금은 이메일 주소를 콘솔에만 기록합니다. 실제 수집을 원하시면 아래 중 하나로 교체하세요:
-  //   1) formsubmit.co  — action="https://formsubmit.co/본인이메일주소" 로 바꾸면 별도 가입 없이 이메일로 알림 수신
-  //   2) 스티비(Stibee) — 스티비에서 발급하는 구독 폼 endpoint로 fetch 요청 교체
-  //   3) 자체 서버리스 함수 — Vercel Serverless Function 만들어서 DB(예: Supabase, Airtable)에 저장
-  const form = document.getElementById('subscribe-form');
-  const status = document.getElementById('form-status');
-
-  form.addEventListener('submit', function(e){
-    e.preventDefault();
-    const email = document.getElementById('email').value.trim();
-    if(!email){ return; }
-
-    // TODO: 아래 fetch 부분을 실제 연동 endpoint로 교체하세요.
-    console.log('구독 신청:', email);
-
-    status.textContent = '구독 폼이 아직 연동 전입니다 — 안내대로 endpoint를 연결해주세요.';
-    status.className = 'form-status err';
-
-    // 연동 완료 후에는 아래처럼 성공 메시지로 바꾸면 됩니다:
-    // status.textContent = '구독 완료! 다음 리포트부터 받아보실 수 있어요.';
-    // status.className = 'form-status ok';
-  });
-</script>
-
+ 
 </body>
 </html>
+ 
+
